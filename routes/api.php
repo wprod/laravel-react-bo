@@ -25,10 +25,10 @@ Route::get('posts', 'PostsController@index');
 Route::get('posts/{slug}', 'PostsController@show');
 
 //CREATE
-Route::middleware('auth:api')->post('posts','PostsController@store');
+Route::post('posts','PostsController@store');
 
 //UPDATE
-Route::middleware('auth:api')->put('posts/{post}','PostsController@update');
+Route::put('posts/{post}','PostsController@update');
 
 //DELETE
-Route::middleware('auth:api')->delete('posts/{post}', 'PostsController@delete');
+Route::delete('posts/{post}', 'PostsController@delete');
