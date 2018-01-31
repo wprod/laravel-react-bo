@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import querystring  from 'querystring';
+import queryString from 'querystring';
 
 import Post from './Post.js';
 import PostCreation from './PostCreation.js';
 
-const URL = 'api/posts/';
+const URL = './api/posts';
 
 class Main extends Component {
 
@@ -23,7 +23,6 @@ class Main extends Component {
 
   componentDidMount() {
     axios.get(URL).then(response => {
-      console.log(response);
       this.setState({posts: response.data});
     });
   }
@@ -32,31 +31,25 @@ class Main extends Component {
     this.setState({currentPost: post});
   }
 
-  handleAddPost(post) {
-    axios.post(URL, querystring.stringify({
-        title: 'Fred',
-        description: 'Flintstone',
-        content: 'Test',
-        id: '1',
-        userId: 1,
-        slug: 'blabla',
-        status: 0,
-        likes: 212,
-    })).then(function(response) {
-      console.log(querystring.stringify({
-          title: 'Fred',
-          description: 'Flintstone',
-          content: 'Test',
-          id: '1',
-          userId: 1,
-      }));
-    }).catch(function(error) {
-      console.log(error);
-    })
+  handleAddPost(newPost) {
+    let params = queryString.stringify({
+      title: newPost.title,
+      description: newPost.description,
+      content: newPost.content,
+      userId: 1, 
+      slug: 'bdlabla',
+      status: newPost.status,
+      likes: newPost.likes
+    });
 
-    // .then(data => {
-    //   this.setState((prevState) => ({posts: prevState.posts.concat(data), currentPost: data}))
-    // });
+    axios.post(URL, params).then(response => {
+      this.setState((prevState) => ({
+        posts: prevState.posts.concat(response.data),
+        currentPost: response.data
+      }))
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   renderPosts() {
